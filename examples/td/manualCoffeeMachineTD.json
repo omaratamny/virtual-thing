@@ -1,0 +1,250 @@
+﻿{
+    "id": "de:tum:ei:esi:sensehat:192.168.0.106",
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "title": "MyCoffeeThing",
+    "@type": "thing",
+    "base":"http://localhost:8080/",
+    "description": "A web connected Coffee Machine",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        },
+        "psk_sc": {
+            "scheme": "psk"
+        },
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ],
+    "properties": {
+        "brewing": {
+            "type": "boolean",
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "Whether the Machine is brewing",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "coap://192.168.0.106:8080/CoffeeMachine/properties/brewing",
+                    "op": [
+                        "readproperty","writeproperty"
+                    ]
+                }
+            ]
+        },
+        "grinding": {
+            "type": "boolean",
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "Whether the Machine is brewing",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "/CoffeeMachine/properties/grinding",
+                    "op": [
+                        "readproperty"
+                    ]
+                }
+            ]
+        },
+        "erroro": {
+            "type": "boolean",
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "If there is an ERROR",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "/CoffeeMachine/properties/erroro",
+                    "op": [
+                        "readproperty"
+                    ]
+                }
+            ]
+        },
+        "waterPercentage": {
+            "type": "integer",
+            "readOnly":true,
+            "writeOnly":false,
+            "minimum": 0,
+            "maximum": 100,
+            "description": "An integer indicating how full the water tanks is in percantages",
+            "forms": [
+                {
+                    "href": "/CoffeeMachine/properties/waterpercentage",
+                    "contentType": "application/json",
+                    "op": [
+                        "readproperty"
+                    ]
+                }
+            ]
+        },
+        "beansPercentage": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "An integer indicating how full the beans container is in percantages",
+            "forms": [
+                {
+                    "href": "/CoffeeMachine/properties/beanspercentage",
+                    "contentType": "application/json",
+                    "op": [
+                        "readproperty"
+                    ]
+                }
+            ]
+        },
+        "binPercentage": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "An integer indicating how full the bin is in percantages",
+            "forms": [
+                {
+                    "href": "/CoffeeMachine/properties/binpercentage",
+                    "contentType": "application/json",
+                    "op": [
+                        "readproperty"
+                    ]
+                }
+            ]
+        }
+    },
+    "actions": {
+        "brew": {
+            "input": {
+                "type": "object",
+                "readOnly":true,
+                "writeOnly":false,
+                "description": "Brew a coffee of your own choice, may differ from normal Groesse of 2(medium)",
+                "properties": {
+                    "typeOfCoffee": {
+                        "type": "string",
+                        "enum": [
+                            "LatteMachiatto",
+                            "Cafe",
+                            "MilchKaffee",
+                            "haha"
+                        ]
+                    },
+                    "groesse": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 3
+                    }
+                },
+                "required": [
+                    "typeOfCoffee"
+                ]
+              
+            },
+            "idempotent": false,
+            "safe": false,
+            "forms": [
+                {
+                    "href": "/CoffeeMachine/actions/brew",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ]
+                }
+            ]
+        },
+        "stopACoffee": {
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "href": "coap://10.0.2.15:8080/CoffeeMachine/actions/stopACoffee",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ]
+                }
+            ]
+        },
+        "turnOff": {
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "href": "/CoffeeMachine/actions/turnOff",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ]
+                }
+            ]
+        }
+    },
+    "events": {
+        "waterShortage": {
+            "data": {
+                "type": "boolean",
+                "readOnly":true,
+                "writeOnly":false
+            },
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "/CoffeeMachine//events/watershortage",
+                    "subprotocol": "longpoll",
+                    "op": "subscribeevent"
+                }
+            ]
+        },
+        "beansShortage": {
+            "data": {
+                "type": "boolean",
+                "readOnly":true,
+                "writeOnly":false
+            },
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "/CoffeeMachine/events/beansshrtage",
+                    "subprotocol": "longpoll",
+                    "op": "subscribeevent"
+                }
+            ]
+        },
+        "binFull": {
+            "data": {
+                "type": "boolean",
+                "readOnly":true,
+                "writeOnly":false
+            },
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "CoffeeMachine/events/bunfull",
+                    "subprotocol": "longpoll",
+                    "op": "subscribeevent"
+                }
+            ]
+        },
+        "errorX": {
+            "data": {
+                "type": "boolean",
+                "readOnly":true,
+                "writeOnly":false
+            },
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "CoffeeMachine/events/errorx",
+                    "subprotocol": "longpoll",
+                    "op": "subscribeevent"
+                }
+            ]
+        }
+    }
+}
