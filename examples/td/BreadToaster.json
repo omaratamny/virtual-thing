@@ -1,7 +1,7 @@
 {
     "id": "de:tum:ei:esi:sensehat:192.168.0.106",
     "@context": "https://www.w3.org/2019/wot/td/v1",
-    "title": "MyBreadThing",
+    "name": "MyBreadThing",
     "@type": "thing",
     "base":"http://localhost:8080/",
     "description": "A web connected Coffee Machine",
