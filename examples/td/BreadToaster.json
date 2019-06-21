@@ -1,0 +1,181 @@
+{
+    "id": "de:tum:ei:esi:sensehat:192.168.0.106",
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "title": "MyBreadThing",
+    "@type": "thing",
+    "base":"http://localhost:8080/",
+    "description": "A web connected Coffee Machine",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        },
+        "psk_sc": {
+            "scheme": "psk"
+        },
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ],
+    "properties": {
+        "toasting": {
+            "type": "boolean",
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "Whether the Machine is Toasting",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "coap://192.168.0.106:8080/things/mybreadthing/properties/toasting",
+                    "op": [
+                        "readproperty","writeproperty"
+                    ]
+                }
+            ]
+        },
+        "heating": {
+            "type": "boolean",
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "Whether the Machine is Heating",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "things/mybreadthing/properties/heating",
+                    "op": [
+                        "readproperty"
+                    ]
+                }
+            ]
+        },
+        "inserting": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "If the machine is inserting bread, or has bread or not, 1 is for no bread, 2 for inserting, 3 is for there is bread,4 getting bread out",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "things/mybreadthing/properties/inserting",
+                    "op": [
+                        "readproperty","writeproperty"
+                    ]
+                }
+            ]
+        },
+        "erroro": {
+            "type": "boolean",
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "If there is an ERROR",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "things/mybreadthing/properties/erroro",
+                    "op": [
+                        "readproperty"
+                    ]
+                }
+            ]
+        },
+        "breadpercentage": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "readOnly":true,
+            "writeOnly":false,
+            "description": "n integer indicating how full the bread container is in percantages",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "things/CoffeeMachine/properties/breadpercentage",
+                    "op": [
+                        "readproperty","writeproperty"
+                    ]
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toastMeOne": {
+                "description": "toast a bread,",
+                "required": [
+                    "typeOfCoffee"
+                ],
+            "idempotent": false,
+            "safe": false,
+            "forms": [
+                {
+                    "href": "http://192.168.0.106:8080/mybreadthing/actions/toastmeone",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ]
+                }
+            ]
+        },
+        "stopABreadToturing": {
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "href": "things/mybreadthing/actions/stopabreadtoturing",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ]
+                }
+            ]
+        },
+        "turnOff": {
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "href": "things/mybreadthing/actions/turnoff",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ]
+                }
+            ]
+        }
+    },
+    "events": {
+        "BreadShortage": {
+            "data": {
+                "type": "boolean",
+                "readOnly":true,
+                "writeOnly":false
+            },
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "things/mybreadthing/events/breadshortage",
+                    "subprotocol": "longpoll",
+                    "op": "subscribeevent"
+                }
+            ]
+        },
+        "errorX": {
+            "data": {
+                "type": "boolean",
+                "readOnly":true,
+                "writeOnly":false
+            },
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "things/mybreadthing/events/errorx",
+                    "subprotocol": "longpoll",
+                    "op": "subscribeevent"
+                }
+            ]
+        }
+    }
+}
