@@ -15,7 +15,7 @@ import * as winston from "winston";
 
 // Default relative paths for the config file and the thing description
 const defaultConfig = "../virtual-thing.conf.json";
-const defaultTd = "../examples/td/coffee_machine_td.json"
+const defaultTd = "../examples/td/breadtoaster.json"
 
 parseArgs();
 
